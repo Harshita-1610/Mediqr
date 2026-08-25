@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medical History | MediQR</title>
+
+    <link rel="stylesheet" href="../assets/css/medical-history.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-heart-pulse"></i>
+
+            <h2>MediQR</h2>
+
+        </div>
+
+
+        <ul>
+
+            <li onclick="window.location.href='dashboard.html'">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </li>
+
+
+            <li onclick="window.location.href='profile.html'">
+
+                <i class="fa-solid fa-user"></i>
+
+                Profile
+
+            </li>
+
+
+            <li class="active">
+
+                <i class="fa-solid fa-notes-medical"></i>
+
+                Medical History
+
+            </li>
+
+
+            <li onclick="window.location.href='prescriptions.html'">
+
+                <i class="fa-solid fa-pills"></i>
+
+                Prescriptions
+
+            </li>
+
+
+            <li onclick="window.location.href='qr.html'">
+
+                <i class="fa-solid fa-qrcode"></i>
+
+                My QR
+
+            </li>
+
+
+            <li onclick="window.location.href='settings.html'">
+
+                <i class="fa-solid fa-gear"></i>
+
+                Settings
+
+            </li>
+
+
+            <li onclick="logout()">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- Navbar -->
+
+        <header class="navbar">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    placeholder="Search medical record..."
+                    id="searchMedical">
+
+            </div>
+
+
+            <div class="top-right">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <img src="https://i.pravatar.cc/45?img=47">
+
+                <span>Harshita</span>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= HEADING ================= -->
+
+        <section class="heading">
+
+            <h1>Medical History</h1>
+
+            <p>
+                View your medical records, reports and prescriptions.
+            </p>
+
+        </section>
+
+
+
+        <!-- ================= MEDICAL RECORDS ================= -->
+
+        <section class="history-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>Medical Records</h2>
+
+                    <p>Your complete medical history</p>
+
+                </div>
+
+
+                <button
+                    class="add-report-btn"
+                    onclick="openReportModal()">
+
+                    <i class="fa-solid fa-file-circle-plus"></i>
+
+                    Add Report
+
+                </button>
+
+            </div>
+
+
+
+            <!-- ================= TABLE ================= -->
+
+            <div class="table-container">
+
+                <table id="medicalTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Date</th>
+
+                            <th>Doctor</th>
+
+                            <th>Diagnosis</th>
+
+                            <th>Treatment</th>
+
+                            <th>Report</th>
+
+                            <th>Prescription</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <!-- RECORD 1 -->
+
+                        <tr>
+
+                            <td>20 Jul 2026</td>
+
+                            <td>Dr. Amit</td>
+
+                            <td>General Checkup</td>
+
+                            <td>Regular Medicines</td>
+
+
+                            <td>
+
+                                <button
+                                    class="view-btn"
+                                    onclick="viewReport('Blood Test Report')">
+
+                                    <i class="fa-solid fa-file-medical"></i>
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+
+                            <td>
+
+                                <button
+                                    class="view-btn prescription-btn"
+                                    onclick="viewPrescription('Prescription - 20 Jul 2026')">
+
+                                    <i class="fa-solid fa-pills"></i>
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+
+                        <!-- RECORD 2 -->
+
+                        <tr>
+
+                            <td>10 Jul 2026</td>
+
+                            <td>Dr. Priya</td>
+
+                            <td>Infection</td>
+
+                            <td>Antibiotics</td>
+
+
+                            <td>
+
+                                <button
+                                    class="view-btn"
+                                    onclick="viewReport('Blood Report')">
+
+                                    <i class="fa-solid fa-file-medical"></i>
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+
+                            <td>
+
+                                <button
+                                    class="view-btn prescription-btn"
+                                    onclick="viewPrescription('Prescription - 10 Jul 2026')">
+
+                                    <i class="fa-solid fa-pills"></i>
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+
+                        <!-- RECORD 3 -->
+
+                        <tr>
+
+                            <td>02 Jul 2026</td>
+
+                            <td>Dr. Rahul</td>
+
+                            <td>Health Screening</td>
+
+                            <td>Observation</td>
+
+
+                            <td>
+
+                                <button
+                                    class="add-small-btn"
+                                    onclick="openReportModal()">
+
+                                    <i class="fa-solid fa-plus"></i>
+
+                                    Add Report
+
+                                </button>
+
+                            </td>
+
+
+                            <td>
+
+                                <button
+                                    class="view-btn prescription-btn"
+                                    onclick="viewPrescription('Prescription - 02 Jul 2026')">
+
+                                    <i class="fa-solid fa-pills"></i>
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= PERMISSION NOTE ================= -->
+
+        <div class="permission-note">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            <span>
+
+                You can upload and view your medical reports.
+                Prescriptions are provided by doctors and cannot be edited.
+
+            </span>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     ADD REPORT MODAL
+     ===================================================== -->
+
+<div class="modal" id="reportModal">
+
+    <div class="modal-box">
+
+
+        <div class="modal-header">
+
+            <h2>Add Medical Report</h2>
+
+
+            <button onclick="closeReportModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+
+        <form id="reportForm">
+
+
+            <label>Report Name</label>
+
+            <input
+                type="text"
+                id="reportName"
+                placeholder="Example: Blood Test Report"
+                required>
+
+
+
+            <label>Report Date</label>
+
+            <input
+                type="date"
+                id="reportDate"
+                required>
+
+
+
+            <label>Upload Report</label>
+
+            <input
+                type="file"
+                id="reportFile"
+                accept=".pdf,.jpg,.jpeg,.png"
+                required>
+
+
+            <p class="file-note">
+
+                Accepted: PDF, JPG, JPEG, PNG
+
+            </p>
+
+
+
+            <div class="modal-buttons">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeReportModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="upload-btn">
+
+                    <i class="fa-solid fa-upload"></i>
+
+                    Upload Report
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     VIEW REPORT MODAL
+     ===================================================== -->
+
+<div class="report-view-modal" id="reportViewModal">
+
+
+    <div class="report-view-box">
+
+
+        <!-- Header -->
+
+        <div class="report-view-header">
+
+            <div>
+
+                <h2 id="displayReportName">
+                    Medical Report
+                </h2>
+
+                <p>
+                    Uploaded medical report
+                </p>
+
+            </div>
+
+
+            <button onclick="closeReportView()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- Report Image -->
+
+        <div class="report-preview-section">
+
+            <h3>
+
+                <i class="fa-solid fa-file-medical"></i>
+
+                Report
+
+            </h3>
+
+
+            <div class="report-image-container">
+
+                <img
+                    id="reportPreviewImage"
+                    src="../assets/images/blood-test-report.jpg"
+                    alt="Medical Report">
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Report Information -->
+
+        <div class="test-info">
+
+            <div>
+
+                <span>Patient Name</span>
+
+                <strong>Harshita Shah</strong>
+
+            </div>
+
+
+            <div>
+
+                <span>Report Date</span>
+
+                <strong>20 July 2026</strong>
+
+            </div>
+
+
+            <div>
+
+                <span>Doctor</span>
+
+                <strong>Dr. Amit</strong>
+
+            </div>
+
+
+            <div>
+
+                <span>Hospital</span>
+
+                <strong>City Hospital</strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Doctor Remarks -->
+
+        <div class="report-remarks">
+
+            <h3>
+
+                <i class="fa-solid fa-user-doctor"></i>
+
+                Doctor's Remarks
+
+            </h3>
+
+
+            <p>
+
+                Test results are within the normal range.
+                Continue regular medication and maintain a healthy
+                lifestyle.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- Buttons -->
+
+        <div class="report-actions">
+
+    <button
+        class="download-report-btn"
+        onclick="downloadReport()">
+
+        <i class="fa-solid fa-download"></i>
+
+        Download Report
+
+    </button>
+
+
+    <button
+        class="close-report-btn"
+        onclick="closeReportView()">
+
+        Close
+
+    </button>
+
+</div>
+
+
+    </div>
+
+</div>
+
+
+
+<script src="../assets/js/medical-history.js"></script>
+
+</body>
+
+</html>

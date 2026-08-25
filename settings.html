@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | MediQR</title>
+
+    <link rel="stylesheet" href="../assets/css/settings.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <h2>MediQR</h2>
+        </div>
+
+        <ul>
+
+           <li onclick="window.location.href='dashboard.html'">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </li>
+
+            <li onclick="window.location.href='profile.html'">
+                <i class="fa-solid fa-user"></i>
+                Profile
+            </li>
+
+            <li onclick="window.location.href='medical-history.html'">
+                <i class="fa-solid fa-notes-medical"></i>
+                Medical History
+            </li>
+
+
+            <li onclick="window.location.href=' prescriptions.html'">
+                <i class="fa-solid fa-pills"></i>
+                Prescriptions
+            </li>
+
+            <li onclick="window.location.href='qr.html'">
+                <i class="fa-solid fa-qrcode"></i>
+                My QR
+            </li>
+
+            <li class="active">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+            </li>
+
+            <li onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="page-header">
+
+            <h1>Settings</h1>
+
+            <p>
+                Manage your account and preferences.
+            </p>
+
+        </div>
+
+
+        <!-- ACCOUNT -->
+
+        <div class="settings-card">
+
+            <div class="card-heading">
+
+                <div class="icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+                    <h2>Account Settings</h2>
+                    <p>Manage your personal account information.</p>
+                </div>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+                    <strong>Profile Information</strong>
+                    <p>Update your name, email and contact details.</p>
+                </div>
+
+                <button onclick="goTo('profile.html')">
+                    Edit Profile
+                </button>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+                    <strong>Password</strong>
+                    <p>Change your account password.</p>
+                </div>
+
+                <button onclick="changePassword()">
+                    Change Password
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- NOTIFICATIONS -->
+
+        <div class="settings-card">
+
+            <div class="card-heading">
+
+                <div class="icon">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+
+                <div>
+                    <h2>Notifications</h2>
+                    <p>Control how you receive notifications.</p>
+                </div>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+                    <strong>Medical Updates</strong>
+                    <p>Receive updates about your medical records.</p>
+                </div>
+
+                <label class="switch">
+
+                    <input type="checkbox" checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+                    <strong>Prescription Reminders</strong>
+                    <p>Get reminders about your medicines.</p>
+                </div>
+
+                <label class="switch">
+
+                    <input type="checkbox" checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRIVACY -->
+
+        <div class="settings-card">
+
+            <div class="card-heading">
+
+                <div class="icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                    <h2>Privacy & Security</h2>
+                    <p>Manage your data and account security.</p>
+                </div>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+                    <strong>QR Medical Record Access</strong>
+                    <p>
+                        Only authorized hospital users can access
+                        your medical information.
+                    </p>
+                </div>
+
+                <span class="secure">
+                    <i class="fa-solid fa-lock"></i>
+                    Protected
+                </span>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+                    <strong>Data Privacy</strong>
+                    <p>Your medical records are securely stored.</p>
+                </div>
+
+                <span class="secure">
+                    <i class="fa-solid fa-check"></i>
+                    Secure
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <div class="logout-card">
+
+            <div>
+
+                <h3>Logout from MediQR</h3>
+
+                <p>
+                    You will need to login again to access your account.
+                </p>
+
+            </div>
+
+            <button onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="../assets/js/settings.js"></script>
+
+</body>
+</html>
