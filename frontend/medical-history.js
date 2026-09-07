@@ -1,4 +1,192 @@
 /* =====================================================
+   HTML ESCAPING HELPER
+   ===================================================== */
+
+function escapeHTML(str) {
+    if (str === null || str === undefined) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =====================================================
+   FETCH AND RENDER MEDICAL HISTORY
+   ===================================================== */
+
+async function loadMedicalHistory() {
+
+    const tableBody =
+        document.querySelector("#medicalTable tbody");
+
+    if (!tableBody) return;
+
+    // Clear hardcoded rows and show loading state
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="6" style="text-align:center; padding:30px; color:#64748b;">
+                <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i>
+                Loading medical records...
+            </td>
+        </tr>
+    `;
+
+    // Get patient_code from query parameter or localStorage, default to MQ2026001
+    const urlParams = new URLSearchParams(window.location.search);
+    const patientCode =
+        urlParams.get("patient_code") ||
+        localStorage.getItem("patient_code") ||
+        "MQ2026001";
+
+    try {
+
+        const response = await fetch(
+            `/api/medical-history?patient_code=${encodeURIComponent(patientCode)}`
+        );
+
+        const data = await response.json();
+
+        if (!data.success) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center; padding:30px; color:#dc2626;">
+                        ${escapeHTML(data.message || "Failed to load medical records.")}
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+        // Update top-right patient name if returned
+        if (data.patient_name) {
+
+            const userNameSpan =
+                document.querySelector(".top-right span");
+
+            if (userNameSpan) {
+                userNameSpan.textContent = data.patient_name;
+            }
+
+        }
+
+        // If no records found
+        if (!data.records || data.records.length === 0) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center; padding:35px; color:#64748b;">
+                        No medical records found for patient ${escapeHTML(patientCode)}.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+        // Render records dynamically
+        tableBody.innerHTML = "";
+
+        data.records.forEach(function (record) {
+
+            const row = document.createElement("tr");
+
+            // Report column
+            let reportCellHTML = "";
+
+            if (record.report && record.report.report_name) {
+
+                const repName = escapeHTML(record.report.report_name);
+
+                reportCellHTML = `
+                    <button
+                        class="view-btn"
+                        onclick="viewReport('${repName}')">
+                        <i class="fa-solid fa-file-medical"></i>
+                        View
+                    </button>
+                `;
+
+            } else {
+
+                reportCellHTML = `
+                    <button
+                        class="add-small-btn"
+                        onclick="openReportModal()">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Report
+                    </button>
+                `;
+
+            }
+
+            // Prescription column
+            let prescCellHTML = "";
+
+            if (record.prescription) {
+
+                const prescTitle = escapeHTML(`Prescription - ${record.date || "Record"}`);
+                const docName = escapeHTML(record.doctor_name || "Doctor");
+                const hospName = escapeHTML(record.hospital_name || "City Hospital");
+                const diag = escapeHTML(record.diagnosis || "General Checkup");
+                const pDate = escapeHTML(record.date || "");
+
+                prescCellHTML = `
+                    <button
+                        class="view-btn prescription-btn"
+                        onclick="viewPrescription('${prescTitle}', '${docName}', '${hospName}', '${diag}', '${pDate}')">
+                        <i class="fa-solid fa-pills"></i>
+                        View
+                    </button>
+                `;
+
+            } else {
+
+                prescCellHTML = `<span style="color:#94a3b8; font-weight:500;">—</span>`;
+
+            }
+
+            row.innerHTML = `
+                <td>${escapeHTML(record.date || "--")}</td>
+                <td>${escapeHTML(record.doctor_name || "--")}</td>
+                <td>${escapeHTML(record.diagnosis || "--")}</td>
+                <td>${escapeHTML(record.treatment || "--")}</td>
+                <td>${reportCellHTML}</td>
+                <td>${prescCellHTML}</td>
+            `;
+
+            tableBody.appendChild(row);
+
+        });
+
+    } catch (error) {
+
+        console.error("Error loading medical history:", error);
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align:center; padding:30px; color:#dc2626;">
+                    Unable to connect to MediQR backend.
+                </td>
+            </tr>
+        `;
+
+    }
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadMedicalHistory();
+});
+
+
+/* =====================================================
    ADD REPORT MODAL
    ===================================================== */
 
@@ -133,7 +321,7 @@ function closeReportView(){
    VIEW PRESCRIPTION
    ===================================================== */
 
-function viewPrescription(prescriptionName){
+function viewPrescription(prescriptionName, docName, hospName, diag, prescDate){
 
     /*
        Remove old prescription modal if it already exists
@@ -151,13 +339,13 @@ function viewPrescription(prescriptionName){
        Prescription data
     */
 
-    let prescriptionDate = "20 July 2026";
-    let doctorName = "Dr. Amit Sharma";
-    let hospitalName = "City Hospital";
-    let diagnosis = "General Checkup";
+    let prescriptionDate = prescDate || "20 July 2026";
+    let doctorName = docName || "Dr. Amit Sharma";
+    let hospitalName = hospName || "City Hospital";
+    let diagnosis = diag || "General Checkup";
 
 
-    if(prescriptionName.includes("10 Jul")){
+    if(!docName && prescriptionName && prescriptionName.includes("10 Jul")){
 
         prescriptionDate = "10 July 2026";
         doctorName = "Dr. Priya";
@@ -167,7 +355,7 @@ function viewPrescription(prescriptionName){
     }
 
 
-    if(prescriptionName.includes("02 Jul")){
+    if(!docName && prescriptionName && prescriptionName.includes("02 Jul")){
 
         prescriptionDate = "02 July 2026";
         doctorName = "Dr. Rahul";
@@ -190,6 +378,9 @@ function viewPrescription(prescriptionName){
     /*
        Modal HTML
     */
+
+    const userSpan = document.querySelector(".top-right span");
+    const modalPatientName = (userSpan && userSpan.textContent.trim()) || "Harshita Shah";
 
     modal.innerHTML = `
 
@@ -227,7 +418,7 @@ function viewPrescription(prescriptionName){
 
                     <span>Patient Name</span>
 
-                    <strong>Harshita Shah</strong>
+                    <strong>${escapeHTML(modalPatientName)}</strong>
 
                 </div>
 
